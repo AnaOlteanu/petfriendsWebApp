@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Newsfeed</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <!-- THEME CSS
+	================================================== -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" >
+  <!-- Themify -->
+  <link rel="stylesheet" th:href="@{/plugins/themify/css/themify-icons.css}">
+  <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slick-theme.css}">
+  <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slicks.css}">
+  <!-- Slick Carousel -->
+  <!-- Slick Carousel -->
+  <link rel="stylesheet" th:href="@{/plugins/owl-carousel/owl.carousel.min.css}">
+  <link rel="stylesheet" th:href="@{/plugins/owl-carousel/owl.theme.default.min.css}">
+  <link rel="stylesheet" th:href="@{/plugins/magnific-popup/magnific-popup.css}">
+  <!-- manin stylesheet -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:insert="navbar :: navbar"> </div>
+
+
+<section class="banner">
+  <div class="container">
+    <div class="banner-img">
+      <a href="post-single.html"><img th:src="@{/images/petfriends-logo.jpg}" alt="" class="img-fluid w-100"></a>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="banner-content text-center">
+          <div class="meta-cat">
+            <span class="text-capitalize letter-spacing-1 cat-name font-extra text-color">Newsfeed</span>
+          </div>
+          <div class="post-title">
+            <h2><a href="post-single.html">Here is your newsFeed</a></h2>
+          </div>
+
+          <div class="post-content">
+            <p>On this page you can see the recents posts of your friends.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-padding pt-4">
+  <div class="container">
+
+    <form method="POST"  th:object="${post}" th:action="@{/post}" enctype="multipart/form-data" class="comment-form mb-5 gray-bg p-5" id="comment-form" >
+      <h3 class="mb-4 text-center">Add a new post!</h3>
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="has-error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}" style="color: red;"></span>
+          <textarea class="form-control mb-3" name="comment" id="comment" cols="30" rows="5"
+                    placeholder="What are you thinking about..."
+                    th:field="*{content}"></textarea>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <span class="has-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red;"></span>
+            <input class="form-control" type="text" name="name" id="name" placeholder="Title..."
+                    th:field="*{title}">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">Select Images</label>
+            <input type="file" id="input" name="postimages" multiple>
+          </div>
+        </div>
+      </div>
+
+      <input class="btn btn-primary" type="submit" name="submit-contact" id="submit_contact"
+             value="Add post">
+    </form>
+
+    <div class="row">
+
+      <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+        <div class="mb-4 post-list border-bottom pb-4" th:each="post:${posts}">
+          <div class="row no-gutters">
+            <div class="col-md-5">
+              <a class="post-thumb " th:href="@{/post/{idPost}(idPost=${post.idPost})}">
+                <img th:src="@{'/post/getImage/' + ${post.images.get(0).idImage}}" alt="" class="img-fluid w-100">
+              </a>
+            </div>
+
+            <div class="col-md-7">
+              <div class="post-article mt-sm-3">
+                <div class="meta-cat">
+                  <span th:text="${post.user.username}" class="letter-spacing cat-name font-extra text-uppercase font-sm"></span>
+                </div>
+                <h3  class="post-title mt-2"><a th:text="${post.title}" th:href="@{/post/{idPost}(idPost=${post.idPost})}"></a></h3>
+
+                <div class="post-meta">
+                  <ul class="list-inline">
+                    <li class="post-like list-inline-item">
+												<span class="font-sm letter-spacing-1 text-uppercase"><i class="ti-time mr-2"></i>3 min
+													read</span>
+                    </li>
+                    <li class="post-view list-inline-item letter-spacing-1">259 Views</li>
+                  </ul>
+                </div>
+                <div class="post-content">
+                  <p th:text="${post.content}" ></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="pagination mt-5 pt-4">
+          <ul class="list-inline">
+            <li class="list-inline-item"><a href="#" class="active">1</a></li>
+            <li class="list-inline-item"><a href="#">2</a></li>
+            <li class="list-inline-item"><a href="#">3</a></li>
+            <li class="list-inline-item"><a href="#" class="prev-posts"><i class="ti-arrow-right"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
+        <div class="sidebar sidebar-right">
+          <div class="sidebar-wrap mt-5 mt-lg-0">
+            <div class="sidebar-widget about mb-5 text-center p-3">
+              <div class="about-author">
+                <img th:src="@{'/user/getImage/' + ${user.images.get(0).idImage}}" alt="" class="img-fluid">
+              </div>
+              <h4> <a th:href="@{/user/{username}(username=${user.username})}" th:text="${user.firstName + ' ' + user.lastName}" class="mb-0 mt-4"></a></h4>
+              <p th:text="${user.username}"></p>
+              <p th:text="${'I am ' + user.firstName + ' and my dear pet is ' + user.pet.name + '. Together we make a great team!'}"></p>
+            </div>
+
+
+            <div class="sidebar-widget subscribe mb-5">
+              <h4 class="text-center widget-title">Search friends</h4>
+              <form th:action="@{/user/search}">
+                <input type="text" class="form-control" placeholder="enter username"
+                  th:name="searchUserInput" th:value="${searchUserInput}"
+                       onkeyup="searchByUsername()"
+                       id="searchInput">
+              </form>
+            </div>
+
+            <div class="sidebar-widget category mb-5 " id="searchResults"
+                 th:fragment="search_results_list">
+              <h4 class="text-center widget-title">Friends</h4>
+              <ul class="list-unstyled" th:if="${searchUserResults!=null}">
+                <li class="align-items-center d-flex justify-content-between"
+                  th:each="searchUser:${searchUserResults}">
+                  <a th:text="${searchUser.username}" th:href="@{/user/{username}(username=${searchUser.username})}"></a>
+                </li>
+              </ul>
+              <ul class="list-unstyled" th:if="${searchUserResults==null} or${searchUserResults.size()==0}">
+                <li class="align-items-center d-flex justify-content-between">
+                  No results
+                </li>
+              </ul>
+            </div>
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script th:inline="javascript">
+  function searchByUsername() {
+    var searchInput = document.getElementById("searchInput").value;
+    console.log("search input is ", searchInput);
+    var url = '/user/search?searchUserInput=' + encodeURIComponent(searchInput);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("searchResults").innerHTML = this.responseText;
+      }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+  }
+</script>
+
+
+<!-- THEME JAVASCRIPT FILES
+================================================== -->
+<!-- initialize jQuery Library -->
+<script th:src="@{/plugins/jquery/jquery.js}"></script>
+<!-- Bootstrap jQuery -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/popper.min.js}"></script>
+<!-- Owl caeousel -->
+<script th:src="@{/plugins/owl-carousel/owl.carousel.min.js}"></script>
+<script th:src="@{/plugins/slick-carousel/slick.min.js}"></script>
+<script th:src="@{/plugins/magnific-popup/magnific-popup.js}"></script>
+<!-- Instagram Feed Js -->
+<script th:src="@{/plugins/instafeed-js/instafeed.min.js}"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+<script th:src="@{/plugins/google-map/gmap.js}"></script>
+<!-- main js -->
+<script th:src="@{/js/custom.js}"></script>
+
+
+</body>
+
+</html>

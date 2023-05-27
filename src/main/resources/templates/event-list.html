@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events</title>
+    <!-- THEME CSS
+	================================================== -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" >
+    <!-- Themify -->
+    <link rel="stylesheet" th:href="@{/plugins/themify/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slick-theme.css}">
+    <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slicks.css}">
+    <!-- Slick Carousel -->
+    <!-- Slick Carousel -->
+    <link rel="stylesheet" th:href="@{/plugins/owl-carousel/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/owl-carousel/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/magnific-popup/magnific-popup.css}">
+    <!-- manin stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:insert="navbar :: navbar"> </div>
+
+<section class="banner">
+    <div class="container">
+        <div class="banner-img">
+            <a href="post-single.html"><img th:src="@{/images/petfriends-logo.jpg}" alt="" class="img-fluid w-100"></a>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="banner-content text-center" style="background-color: #f3ecec">
+                    <div class="meta-cat">
+                        <span class="text-capitalize letter-spacing-1 cat-name font-extra text-color">events</span>
+                    </div>
+                    <div class="post-title">
+                        <h2><a href="blog-single.html">Here are our events!</a></h2>
+                    </div>
+
+                    <div class="post-content">
+                        <p>On this page you can see the events happening now, the events that ended and the events that you joined.</p>
+
+                        <p th:if="${requestStatus=='PENDING'}" style="color:#000000; font-weight: bold">Wait for the approval of the event planner request!</p>
+
+                        <p th:if="${numberPosts}>=2 and not ${isPlanner} and ${requestStatus!='PENDING'}">You have posted more than 2 posts so you can become an event planner yourself.
+                        Click the button to become a planner!</p>
+                        <form method="post" th:action="@{/becomePlanner/{idUser}(idUser=${user.idUser})}" th:if="${numberPosts}>=2 and not ${isPlanner} and ${requestStatus!='PENDING'}">
+                            <input type="hidden" name="idUser" th:value="${user.idUser}" />
+                            <button type="submit" class="btn btn-grey mt-3">Become planner</button>
+                        </form>
+
+                        <p th:if="${numberPosts}<2">To become an event planner you must submit 2 posts on the platform.
+                            Click the button to add more posts!</p>
+                        <a th:if="${numberPosts}<2" th:href="@{/post/list}" class="btn btn-grey mt-3"> Add post</a>
+
+                        <p th:if="${numberPosts}>=2 and ${isPlanner}">You are an event planner. Add an event now!</p>
+                        <a th:if="${isPlanner}" th:href="@{/event/add}" class="btn btn-grey mt-3">Add event</a>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section-padding pt-4">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+
+                <h3 class="post-title mt-2"><a href="blog-single.html" style="color: #c07070">Entered events</a></h3>
+                <div class="media border-bottom py-3 sidebar-post-item"
+                     th:each="enteredEvent:${enteredEvents}">
+                    <a href="#"><img class="mr-4" src="images/news/thumb-1.jpg" alt=""></a>
+                    <div class="media-body">
+                        <span th:text="${enteredEvent.getFormattedStartDate() + ' - ' + enteredEvent.getFormattedEndDate()}" class="text-muted letter-spacing text-uppercase font-sm"></span>
+                        <h4><a th:text="${enteredEvent.title}" th:href="@{/event/{idEvent}(idEvent=${enteredEvent.idEvent})}"></a></h4>
+                    </div>
+                </div>
+
+                <br>
+
+                <h3 class="post-title mt-2" ><a href="blog-single.html" style="color: #c07070">Current events</a></h3>
+                <div class="media border-bottom py-3 sidebar-post-item"
+                     th:each="currentEvent:${currentEvents}">
+                    <a href="#"><img class="mr-4" src="images/news/thumb-1.jpg" alt=""></a>
+                    <div class="media-body">
+                        <span th:text="${currentEvent.getFormattedStartDate() + ' - ' + currentEvent.getFormattedEndDate()}" class="text-muted letter-spacing text-uppercase font-sm"></span>
+                        <h4><a th:text="${currentEvent.title}" th:href="@{/event/{idEvent}(idEvent=${currentEvent.idEvent})}"></a></h4>
+                    </div>
+                </div>
+
+                <br>
+
+                <h3 class="post-title mt-2"><a href="blog-single.html" style="color: #c07070">Ended events</a></h3>
+                <div class="media border-bottom py-3 sidebar-post-item"
+                     th:each="endedEvent:${endedEvents}">
+                    <a href="#"><img class="mr-4" src="images/news/thumb-1.jpg" alt=""></a>
+                    <div class="media-body">
+                        <span th:text="${endedEvent.getFormattedStartDate() + ' - ' + endedEvent.getFormattedEndDate()}" class="text-muted letter-spacing text-uppercase font-sm"></span>
+                        <h4><a th:text="${endedEvent.title}" th:href="@{/event/{idEvent}(idEvent=${endedEvent.idEvent})}"></a></h4>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
+                <div class="sidebar sidebar-right">
+                    <div class="sidebar-wrap mt-5 mt-lg-0">
+                        <div class="sidebar-widget about mb-5 text-center p-3">
+                            <div class="about-author">
+                                <img src="images/author.jpg" alt="" class="img-fluid">
+                            </div>
+                            <h4 class="mb-0 mt-4">Liam Mason</h4>
+                            <p>Travel Blogger</p>
+                            <p>I'm Liam, last year I decided to quit my job and travel the world. You can follow my journey on this
+                                blog!</p>
+                            <img src="images/liammason.png" alt="" class="img-fluid">
+                        </div>
+
+                        <div class="sidebar-widget follow mb-5 text-center">
+                            <h4 class="text-center widget-title">Follow Me</h4>
+                            <div class="follow-socials">
+                                <a href="#"><i class="ti-facebook"></i></a>
+                                <a href="#"><i class="ti-twitter"></i></a>
+                                <a href="#"><i class="ti-instagram"></i></a>
+                                <a href="#"><i class="ti-youtube"></i></a>
+                                <a href="#"><i class="ti-pinterest"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-widget mb-5 ">
+                            <h4 class="text-center widget-title">Trending Posts</h4>
+
+                            <div class="sidebar-post-item-big">
+                                <a href="blog-single.html"><img src="images/news/img-1.jpg" alt="" class="img-fluid"></a>
+                                <div class="mt-3 media-body">
+                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
+                                    <h4><a href="blog-single.html">Meeting With Clarissa, Founder Of Purple Conversation App</a></h4>
+                                </div>
+                            </div>
+
+
+
+                            <div class="media py-3 sidebar-post-item">
+                                <a href="#"><img class="mr-4" src="images/news/thumb-2.jpg" alt=""></a>
+                                <div class="media-body">
+                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
+                                    <h4><a href="blog-single.html">Vivamus molestie gravida turpis.</a></h4>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- THEME JAVASCRIPT FILES
+================================================== -->
+<!-- initialize jQuery Library -->
+<script th:src="@{/plugins/jquery/jquery.js}"></script>
+<!-- Bootstrap jQuery -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/popper.min.js}"></script>
+<!-- Owl caeousel -->
+<script th:src="@{/plugins/owl-carousel/owl.carousel.min.js}"></script>
+<script th:src="@{/plugins/slick-carousel/slick.min.js}"></script>
+<script th:src="@{/plugins/magnific-popup/magnific-popup.js}"></script>
+<!-- Instagram Feed Js -->
+<script th:src="@{/plugins/instafeed-js/instafeed.min.js}"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+<script th:src="@{/plugins/google-map/gmap.js}"></script>
+<!-- main js -->
+<script th:src="@{/js/custom.js}"></script>
+
+</body>
+</html>

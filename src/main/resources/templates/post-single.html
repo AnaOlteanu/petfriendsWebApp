@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- THEME CSS
+	================================================== -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" >
+    <!-- Themify -->
+    <link rel="stylesheet" th:href="@{/plugins/themify/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slick-theme.css}">
+    <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slicks.css}">
+    <!-- Slick Carousel -->
+    <link rel="stylesheet" th:href="@{/plugins/owl-carousel/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/owl-carousel/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/magnific-popup/magnific-popup.css}">
+    <!-- manin stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:insert="navbar :: navbar"> </div>
+
+<section class="single-block-wrapper section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <article class="post">
+                            <div class="post-header mb-5 text-center">
+                                <div class="meta-cat">
+                                    <a class="post-category font-extra text-color text-uppercase font-sm letter-spacing-1"
+                                       href="#">Health ,</a>
+                                    <a class="post-category font-extra text-color text-uppercase font-sm letter-spacing-1"
+                                       href="#">lifestyle</a>
+                                </div>
+                                <h2 th:text="${post.title}" class="post-title mt-2">
+                                </h2>
+
+                                <div class="post-meta">
+                                    <span th:text=" ${'by ' + post.user.username}" class="text-uppercase font-sm letter-spacing-1 mr-3"></span>
+                                    <span th:text="${post.getFormattedDate()}" class="text-uppercase font-sm letter-spacing-1">January 17,2019</span>
+                                </div>
+                            </div>
+
+                            <!--post gallery start-->
+                            <div class="post-img mb-4">
+                                <div class="post_gallery owl-carousel owl-theme">
+                                    <div class="item" th:each="image:${post.images}">
+                                        <a href="#"><img class="img-fluid" th:src="@{'/post/getImage/' + ${image.idImage}}"
+                                                         alt="" /></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--post gallery end-->
+                            <div class="tags-share-box center-box d-flex text-center justify-content-between border-top border-bottom py-3">
+                                <a th:href="'#comment-section'">
+                                        <span th:text="|${post.comments.size()} Comments|" class="single-comment-o">
+                                            <i class="fa fa-comment-o"></i>
+                                        </span>
+                                </a>
+                                <div class="post-share"
+                                     th:if="${post.user!=null} and ${#authentication.getName()}==${post.user.username}
+                                        and ${isLiked}==false">
+                                    <span th:text="|${numberLikes} likes|" class="count-number-like"></span>
+                                    <a  rel="nofollow"
+                                        th:href="@{/getLikes/{idPost}(idPost=${post.idPost})}"
+                                        class="penci-post-like single-like-button">
+                                        <i class="ti-heart"></i>
+                                    </a>
+                                </div>
+                                <div class="post-share"
+                                     th:if="${post.user!=null} and ${#authentication.getName()}!=${post.user.username}
+                                        and ${isLiked}==false">
+                                    <span th:text="|${numberLikes} likes|" class="count-number-like"></span>
+                                    <a  rel="nofollow"
+                                        th:href="@{/like/{idPost}/user/{username}(idPost=${post.idPost},
+                                            username=${#authentication.getName()})}" class="penci-post-like single-like-button">
+                                        <i class="ti-thumb-up"></i>
+                                    </a>
+                                </div>
+                                <div class="post-share"
+                                     th:if="${post.user!=null} and ${#authentication.getName()}!=${post.user.username}
+                                        and ${isLiked}==true">
+                                    <span th:text="|${numberLikes} likes|" class="count-number-like"></span>
+                                    <a rel="nofollow"
+                                       th:href="@{/removeLike/{idPost}/user/{username}(idPost=${post.idPost},
+                                            username=${#authentication.getName()})}" class="penci-post-like single-like-button">
+                                        <i class="ti-thumb-down"></i>
+                                    </a>
+                                </div>
+
+                                <div class="list-posts-share" th:if="${post.user != null} and ${#authentication.getName()} == ${post.user.username}">
+                                    <a rel="nofollow" th:href="@{/post/delete/{idPost}(idPost=${post.idPost},username=${#authentication.getName()})}">
+                                        <i class="ti-trash">Delete</i>
+                                    </a>
+                                    <a rel="nofollow" th:href="@{/post/edit/{idPost}(idPost=${post.idPost})}">
+                                        <i class="ti-pencil">Edit</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="post-author d-flex my-5">
+                    <div class="author-img">
+                        <img alt="" th:src="@{'/user/getImage/' + ${post.user.images.get(0).idImage}}" class="avatar avatar-100 photo" width="100"
+                             height="100">
+                    </div>
+
+                    <div class="author-content pl-4">
+                        <h4 class="mb-3"><a th:text="${post.user.username}" th:href="@{/user/{username}(username=${post.user.username})}" title="" rel="author" class="text-capitalize"></a>
+                        </h4>
+                        <p th:text="${post.content}"></p>
+                    </div>
+                </div>
+
+                <div class="comment-area my-5" id="comment-section">
+                    <h3 th:text="|${post.comments.size()} Comments|" class="mb-4 text-center"> </h3>
+
+                    <div class="comment-area-box media mt-5" th:each="postComment : ${post.comments}">
+                        <img style="max-width: 10%;" alt="" th:src="@{'/user/getImage/' + ${postComment.user.images.get(0).idImage}}" class="img-fluid float-left mr-3 mt-2">
+
+                        <div class="media-body ml-4">
+                            <a th:href="@{/user/{username}(username=${postComment.user.username})}">
+                                <h4 th:text="${postComment.user.username}" class="mb-0"></h4>
+                            </a>
+                            <span th:text="${postComment.getFormattedDate()}" class="date-comm font-sm text-capitalize text-color"><i
+                                    class="ti-time mr-2"></i></span>
+
+                            <div class="comment-content mt-3">
+                                <p th:text="${postComment.content}"></p>
+                            </div>
+                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+                                <a th:href="@{/comment/delete/{idComment}(idComment=${postComment.idComment},idPost=${post.idPost},username=${postComment.user.username})}"
+                                   class="text-underline " style="margin-left: 20px;">
+                                    Delete <i class="ti-trash"></i>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form th:object="${comment}" method="post"
+                      th:action="@{/comment/{idPost}/user/{username}(idPost=${post.idPost}, username=${#authentication.getName()})}"
+                      class="comment-form mb-5 gray-bg p-5" id="comment-form">
+                    <h3 class="mb-4 text-center">Leave a comment</h3>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <span class="has-error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}" style="color: red;"></span>
+                            <textarea class="form-control mb-3" name="comment" id="comment" cols="30" rows="5"
+                                      placeholder="Type your comment..."
+                                    th:field="*{content}"></textarea>
+                        </div>
+                    </div>
+                    <input class="btn btn-primary" type="submit" name="submit-contact" id="submit_contact"
+                           value="Add comment">
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- THEME JAVASCRIPT FILES
+================================================== -->
+<!-- initialize jQuery Library -->
+<script th:src="@{/plugins/jquery/jquery.js}"></script>
+<!-- Bootstrap jQuery -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/popper.min.js}"></script>
+<!-- Owl caeousel -->
+<script th:src="@{/plugins/owl-carousel/owl.carousel.min.js}"></script>
+<script th:src="@{/plugins/slick-carousel/slick.min.js}"></script>
+<script th:src="@{/plugins/magnific-popup/magnific-popup.js}"></script>
+<!-- Instagram Feed Js -->
+<script th:src="@{/plugins/instafeed-js/instafeed.min.js}"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+<script th:src="@{/plugins/google-map/gmap.js}"></script>
+<!-- main js -->
+<script th:src="@{/js/custom.js}"></script>
+
+
+
+
+</body>
+</html>

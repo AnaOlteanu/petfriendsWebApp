@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+  <link rel="stylesheet" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" >
+  <!-- Themify -->
+  <link rel="stylesheet" th:href="@{/plugins/themify/css/themify-icons.css}">
+  <link rel="stylesheet" th:href="@{plugins/slick-carousel/slick-theme.css}">
+  <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slicks.css}">
+  <!-- Slick Carousel -->
+  <!--    <link rel="stylesheet" href="plugins/owl-carousel/owl.carousel.min.css">-->
+  <!--    <link rel="stylesheet" href="plugins/owl-carousel/owl.theme.default.min.css">-->
+  <!--    <link rel="stylesheet" href="plugins/magnific-popup/magnific-popup.css">-->
+  <!-- manin stylesheet -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:insert="navbar :: navbar"> </div>
+
+<section class="h-100 h-custom gradient-custom-2">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px; background-color: #cc9d9d">
+          <form method="POST"  th:action="@{/login}">
+            <div class="card-body p-0">
+              <div class="row g-0">
+                <div class="col-lg-6" >
+                  <div class="p-5">
+                    <h3 class="fw-normal mb-5" style="color: #ffffff;">Please enter username and password</h3>
+
+                      <div class="mb-4 pb-2">
+                        <div class="form-outline">
+                          <div th:if="${param.error}" class="alert alert-danger">
+                            Invalid username and password
+                          </div>
+                          <input type="text" id="form3Examplev4" class="form-control form-control-lg"
+                                 name="username" placeholder="username"/>
+                        </div>
+                      </div>
+
+                    <div class="mb-4 pb-2">
+                      <div class="form-outline">
+                        <input type="password" id="form3Examplev6" class="form-control form-control-lg"
+                               name="password" placeholder="passowrd"/>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-lg-6 bg-indigo text-white">
+                  <div class="p-5">
+                    <h3 class="fw-normal mb-5" style="color: #c55e5e;">Login Now!</h3>
+                  </div>
+                  <div style="display: flex; justify-content: center; align-items: center; height: 50px; ">
+                    <button type="submit" class="btn btn-light btn-lg login-btn"
+                            data-mdb-ripple-color="dark" style=" width: 100%; background-color: #c4a8a8; color: white;">Login</button>
+                  </div>
+                  <div class="card-footer" style="display: flex; justify-content: center; align-items: center; height: 80px; margin-top: 2rem; ">
+                            <div class="d-flex justify-content-center links" style="color: #c55e5e;">
+                              Don't have an account? &ensp;
+                              <br>
+                              <a th:href="@{/register}"> Register Now</a>
+                            </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+</body>
+</html>
