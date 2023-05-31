@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface CityService {
 
     Optional<City> findById(Long idCity);
+    Optional<City> findByName(String name);
 
     List<City> findAllCities();
 }
