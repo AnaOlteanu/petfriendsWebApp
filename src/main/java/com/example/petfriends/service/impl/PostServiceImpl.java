@@ -11,8 +11,14 @@ import com.example.petfriends.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -95,6 +101,43 @@ public class PostServiceImpl implements PostService {
     public Long getNumberLikes(Long idPost) {
         return postRepository.getNumberLikes(idPost);
     }
+
+    @Override
+    public Page<Post> findPaginatedAndSorted(List<Post> posts, Pageable pageable) {
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Post> sortedPosts = sortPosts(posts, pageable.getSort());
+
+        if (sortedPosts.size() < startItem) {
+            return Page.empty();
+        }
+
+        List<Post> pagedPosts = new ArrayList<>();
+        if (sortedPosts.size() >= startItem + pageSize) {
+            pagedPosts = sortedPosts.subList(startItem, startItem + pageSize);
+        } else {
+            pagedPosts = sortedPosts.subList(startItem, sortedPosts.size());
+        }
+
+        return new PageImpl<>(pagedPosts, pageable, sortedPosts.size());
+
+    }
+
+    private List<Post> sortPosts(List<Post> posts, Sort sort) {
+        List<Sort.Order> orders = sort.get().collect(Collectors.toList());
+
+        if (!orders.isEmpty()) {
+            Comparator<Post> comparator = Comparator.comparing(Post::getDate).reversed();
+            posts.sort(comparator);
+        }
+
+        return posts;
+    }
+
+
 
 
 }

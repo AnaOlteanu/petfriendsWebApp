@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>My Profile</title>
+  <title>Profile</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -58,23 +58,11 @@
 
               <div class="post-body">
                 <div class="entry-content">
-                  <p> It was a cheerful prospect. I asked Perry what he thought about it; but he
-                    only shrugged his shoulders and continued a longwinded prayer he had been at
-                    for some time. He was wont to say that the only redeeming feature of our
-                    captivity was the ample time it gave him for the improvisation of prayers—it
-                    was becoming an obsession with him.</p>
-
                   <h2 class="mt-4 mb-3">Perfect design & code delivered to you</h2>
                   <p> The Sagoths had begun to take notice of his habit of declaiming throughout
                     entire marches. One of them asked him what he was saying—to whom he was
                     talking. The question gave me an idea, so I answered quickly before Perry
                     could say anything.</p>
-                  <blockquote>
-                    <i class="ti-quote-left mr-2"></i>A wise girls knows her limit to touch the
-                    sky.Repellat sapiente neque iusto praesentium adipisci.The question gave me
-                    an idea, so I answered quickly before Perry could say anything.<i
-                          class="ti-quote-right ml-2"></i>
-                  </blockquote>
 
                 </div>
               </div>
@@ -94,8 +82,6 @@
               <p></p>
               <p th:text="${'Hey there. My name is ' + user.firstName + ' and my pet is a beautiful ' + user.pet.breed + ' named ' + user.pet.name +
               '. He is ' + user.pet.age + ' years old. We are from ' + user.city.cityName}"></p>
-              <img src="images/liammason.png" alt="" class="img-fluid">
-
 
               <div class="sidebar-widget follow mb-5 text-center" th:if="${user.username}!=${#authentication.getName()}">
                   <a class="btn btn-grey mt-3"
@@ -107,11 +93,9 @@
               </div>
 
               <div class="tags-share-box center-box d-flex text-center justify-content-between border-top border-bottom py-3">
-                <span class="single-comment-o"><i class="fa fa-comment-o"></i>0 comment</span>
-
+                <a th:href="@{/followers/{username}(username=${user.username})}"><span class="single-comment-o" th:text="|${numberFollowers} followers|"></span></a>
                 <div class="post-share">
-                  <span class="count-number-like">2</span>
-                  <a class="penci-post-like single-like-button"><i class="ti-heart"></i></a>
+                  <a th:href="@{/following/{username}(username=${user.username})}"><span class="single-comment-o" th:text="|${numberFollowing} following|"></span></a>
                 </div>
 
               </div>
@@ -136,7 +120,9 @@
               <a class="post-thumb mb-4 d-block" th:href="@{/post/{idPost}(idPost=${post.idPost})}">
                 <img th:src="@{'/post/getImage/' + ${post.images.get(0).idImage}}" alt="" class="img-fluid w-100">
               </a>
-              <span class="cat-name text-color font-extra text-sm text-uppercase letter-spacing-1">Explore</span>
+              <a th:href="@{/post/{idPost}(idPost=${post.idPost})}">
+                <span class="cat-name text-color font-extra text-sm text-uppercase letter-spacing-1">read more</span>
+              </a>
               <a th:href="@{/post/{idPost}(idPost=${post.idPost})}"><h3 th:text="${post.title}" class="post-title mt-1"></h3></a>
 
               <span th:text="${post.getFormattedDate()}" class="text-muted letter-spacing text-uppercase font-sm"></span>

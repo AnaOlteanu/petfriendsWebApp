@@ -13,7 +13,7 @@ public interface ImageService {
 
      void savePostImageFile(Long postId, MultipartFile[] images) throws IOException;
 
-     void saveEventImageFile(Long eventIt, MultipartFile[] images) throws IOException;
+     void saveEventImageFile(Long eventId, MultipartFile[] images) throws IOException;
 
      Optional<Image> findById(Long id);
 }

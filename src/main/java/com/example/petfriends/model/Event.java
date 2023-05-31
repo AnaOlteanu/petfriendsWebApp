@@ -3,6 +3,7 @@ package com.example.petfriends.model;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
@@ -36,10 +37,12 @@ public class Event {
 
     @FutureOrPresent(message = "Start date should be in the present or future!")
     @Column(name = "start_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
     @FutureOrPresent(message = "End date should be in the present or future!")
     @Column(name = "end_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @NotEmpty(message = "Description of event cannot be empty!")
@@ -50,7 +53,7 @@ public class Event {
     @NotNull
     private String location;
 
-    @Column(columnDefinition = "enum('PLAYDATE', 'MEETING', 'COMPETITION')")
+    @Column(columnDefinition = "enum('PLAYDATE', 'MEETING_FOR_ALL', 'ADOPTION', 'FAMILY_MEETING', 'BREED_MEETING')")
     @Enumerated(EnumType.STRING)
     private CategoryEnum category;
 
@@ -62,7 +65,7 @@ public class Event {
     @JoinColumn(name = "id_user_planner", nullable = true)
     private User userPlanner;
 
-    @ManyToMany(mappedBy = "eventsEntered", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "eventsJoined", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
     private List<User> users = new ArrayList<>();
 

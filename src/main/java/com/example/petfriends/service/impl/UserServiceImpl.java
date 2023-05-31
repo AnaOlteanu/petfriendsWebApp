@@ -87,4 +87,15 @@ public class UserServiceImpl implements UserService {
 
         return userSource.getFollowedUsers().contains(userFollowed);
     }
+
+    @Override
+    public Long getNumberFollowers(User user) {
+        return userRepository.getNumberFollowing(user.getIdUser());
+    }
+
+    @Override
+    public List<User> getFollowers(Long idUser) {
+        return userRepository.getFollowers(idUser);
+    }
+
 }

@@ -9,6 +9,9 @@ import com.example.petfriends.service.PostService;
 import com.example.petfriends.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +25,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @Slf4j
@@ -43,15 +47,19 @@ public class PostController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(4);
 
+        String sortItem = "date";
         User authenticatedUser = userService.getAuthenticatedUser();
         List<Post> posts = postService.findFromFollowedUsers(authenticatedUser.getIdUser());
+        Page<Post> postPage = postService.findPaginatedAndSorted(posts, PageRequest.of(currentPage-1, pageSize, Sort.by(sortItem)));
 
-        log.info("Posts from followed people {} ", posts);
+
+        log.info("Posts from followed people {} ", postPage.getContent());
 
         ModelAndView modelAndView = new ModelAndView("post-list");
-        modelAndView.addObject("posts", posts);
+        modelAndView.addObject("posts", postPage.getContent());
         modelAndView.addObject("user", authenticatedUser);
         modelAndView.addObject("post", new Post());
+        modelAndView.addObject("postPage", postPage);
 
         return modelAndView;
 
@@ -61,13 +69,21 @@ public class PostController {
     public String addPost(@Valid @ModelAttribute("post") Post post,
                           BindingResult bindingResult,
                           @RequestParam("postimages")MultipartFile[] images,
+                          @RequestParam("page") Optional<Integer> page,
+                          @RequestParam("size") Optional<Integer> size,
                           Model model) throws IOException {
 
         if(bindingResult.hasErrors()){
+            int currentPage = page.orElse(1);
+            int pageSize = size.orElse(4);
+            String sortItem = "date";
             User authenticatedUser = userService.getAuthenticatedUser();
             List<Post> posts = postService.findFromFollowedUsers(authenticatedUser.getIdUser());
+            Page<Post> postPage = postService.findPaginatedAndSorted(posts, PageRequest.of(currentPage-1, pageSize, Sort.by(sortItem)));
+
             model.addAttribute("posts", posts);
             model.addAttribute("user", authenticatedUser);
+            model.addAttribute("postPage", postPage);
             return "post-list";
         }
 
@@ -151,17 +167,30 @@ public class PostController {
     @RequestMapping("/removeLike/{idPost}/user/{username}")
     public String removeLikePost(@PathVariable("idPost") Long idPost,
                                  @PathVariable("username") String username) {
-        Post blog = postService.findById(idPost);
+        Post post = postService.findById(idPost);
         User user = userService.findByUsername(username);
 
         if(postService.isLiked(idPost, username)) {
-            user.getLikedPosts().remove(blog);
+            user.getLikedPosts().remove(post);
             userService.saveWithoutHash(user);
         } else {
             throw new NotFoundException("Like not found!");
         }
         log.info("User {} removed like from post with id {}", username, idPost);
         return "redirect:/post/" + idPost;
+
+    }
+
+    @RequestMapping("/getLikes/{idPost}")
+    public ModelAndView removeLikePost(@PathVariable("idPost") Long idPost) {
+        Post post = postService.findById(idPost);
+        Set<User> users = post.getUsersLike();
+
+        ModelAndView modelAndView = new ModelAndView("users-list");
+        modelAndView.addObject("users", users);
+        modelAndView.addObject("likes", true);
+
+        return modelAndView;
 
     }
 

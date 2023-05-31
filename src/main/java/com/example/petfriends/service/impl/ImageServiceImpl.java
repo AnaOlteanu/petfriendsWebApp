@@ -123,9 +123,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void saveEventImageFile(Long eventIt, MultipartFile[] images) throws IOException {
+    public void saveEventImageFile(Long eventId, MultipartFile[] images) throws IOException {
 
-        Optional<Event> event = eventRepository.findById(eventIt);
+        Optional<Event> event = eventRepository.findById(eventId);
 
         if(event.isPresent()) {
             List<Image> pictures = event.get().getImages();
@@ -149,7 +149,7 @@ public class ImageServiceImpl implements ImageService {
             }
 
         } else {
-            throw new NotFoundException("Event with id " + eventIt + " not found");
+            throw new NotFoundException("Event with id " + eventId + " not found");
         }
 
     }

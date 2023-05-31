@@ -55,4 +55,16 @@ public class EventPlannerRequestController {
         return "redirect:/admin/requests";
 
     }
+
+    @RequestMapping("/request/{idRequest}/reject")
+    public String rejectRequest(@PathVariable("idRequest") Long idRequest) {
+
+        EventPlannerRequest request = eventPlannerRequestService.findById(idRequest);
+
+        request.setStatus(RequestStatus.REJECTED);
+        EventPlannerRequest savedRequest = eventPlannerRequestService.save(request);
+
+        return "redirect:/admin/requests";
+
+    }
 }

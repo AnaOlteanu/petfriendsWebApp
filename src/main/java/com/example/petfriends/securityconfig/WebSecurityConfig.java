@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,8 +24,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/h2-console/login.do*").permitAll()
                 .antMatchers("/resources/**", "/static/**", "/plugins/**", "/css/**", "/js/**", "/images/**","/fonts/**", "/jquery/**", "/bootstrap/**",
-                        "/register", "/index", "/").permitAll()
-                .antMatchers("/admin/requests").hasRole("ADMIN")
+                        "/register", "/index", "/", "/event/list").permitAll()
+                .antMatchers("/admin/requests", "/admin/*").hasRole("ADMIN")
+                .antMatchers("/event/add", "/event/edit/*", "/event/delete/*").hasRole("EVENT_PLANNER")
+                .antMatchers("/post/*", "/user/*", "/comment/{idPost}/user/{username}").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

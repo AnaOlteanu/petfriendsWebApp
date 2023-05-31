@@ -13,11 +13,7 @@
   <link rel="stylesheet" th:href="@{/plugins/themify/css/themify-icons.css}">
   <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slick-theme.css}">
   <link rel="stylesheet" th:href="@{/plugins/slick-carousel/slicks.css}">
-  <!-- Slick Carousel -->
-  <!--    <link rel="stylesheet" href="plugins/owl-carousel/owl.carousel.min.css">-->
-  <!--    <link rel="stylesheet" href="plugins/owl-carousel/owl.theme.default.min.css">-->
-  <!--    <link rel="stylesheet" href="plugins/magnific-popup/magnific-popup.css">-->
-  <!-- manin stylesheet -->
+
   <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -100,7 +96,7 @@
 
                   <div class="mb-4 pb-2">
                     <fieldset>
-                      <label for="category"> Select city</label>
+                      <label> Select city</label>
                       <select class="custom-select" id="city" name="city" th:field="*{city}">
                         <option th:each="city:${cities}"
                                 th:value="${city.idCity}" th:text="${city.cityName}">

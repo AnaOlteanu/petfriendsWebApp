@@ -82,14 +82,25 @@
                                 <div class="follow-socials">
                                     <a th:href="@{/register}" class="fb"><i class="ti-plus"></i></a>
                                     <a th:href="@{/login}" class="fb"><i class="ti-lock"></i></a>
-                                    <a th:href="@{/admin}" class="fb"><i class="ti-panel"></i></a>
                                 </div>
                             </div>
 
-                            <div sec:authorize="isAuthenticated()"  class="col-lg-4">
+                            <div sec:authorize="isAuthenticated() and hasRole('USER')" class="col-lg-4">
                                 <h5 class="text-uppercase letter-spacing mb-4">See posts from friends!</h5>
                                 <div class="follow-socials">
                                     <a th:href="@{/post/list}" class="fb"><i class="ti-image"></i></a>
+                                </div>
+                            </div>
+
+                            <div sec:authorize="isAuthenticated() and hasRole('ADMIN')" class="col-lg-4">
+                                <div class="list-group">
+                                    <button type="button" class="list-group-item list-group-item-dark">
+                                        Actions
+                                    </button>
+                                    <a th:href="@{/admin/requests}" type="button" class="list-group-item list-group-item-action">See event planner requests</a>
+                                    <a th:href="@{/admin/petShops}" type="button" class="list-group-item list-group-item-action">See pet shops</a>
+                                    <a th:href="@{/admin/addPetShop}" type="button" class="list-group-item list-group-item-action">Add pet shop</a>
+                                    <a th:href="@{/event/list}" type="button" class="list-group-item list-group-item-action" disabled>See events</a>
                                 </div>
                             </div>
                         </div>

@@ -106,7 +106,7 @@ public class User {
             joinColumns = @JoinColumn(name = "id_user"),
             inverseJoinColumns = @JoinColumn(name = "id_event"))
     @ToString.Exclude
-    private List<Event> eventsEntered;
+    private List<Event> eventsJoined;
 
     @OneToMany(mappedBy = "userPlanner")
     @OnDelete(action = OnDeleteAction.CASCADE)

@@ -6,6 +6,7 @@ import com.example.petfriends.model.User;
 import com.example.petfriends.service.CommentService;
 import com.example.petfriends.service.PostService;
 import com.example.petfriends.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @Controller
+@Slf4j
 public class CommentController {
 
     @Autowired
@@ -57,6 +59,8 @@ public class CommentController {
     public String deleteById(@PathVariable("idComment") Long idComment,
                              @RequestParam("idPost") Long idPost,
                              @RequestParam("username") String username){
+        log.info("authentication principal {}", userService.getAuthenticatedUser().getUsername());
+        log.info("username comment {} ", username);
         commentService.deleteById(idComment);
 
         return "redirect:/post/" + idPost;

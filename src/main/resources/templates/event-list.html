@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Events</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+    <!-- Css Styles -->
+    <link rel="stylesheet" th:href="@{/css2/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css2/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css2/elegant-icons.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css2/owl.carousel.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css2/magnific-popup.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css2/slicknav.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css2/style.css}" type="text/css">
     <!-- THEME CSS
 	================================================== -->
     <!-- Bootstrap -->
@@ -18,6 +31,8 @@
     <link rel="stylesheet" th:href="@{/plugins/magnific-popup/magnific-popup.css}">
     <!-- manin stylesheet -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
+
 </head>
 <body>
 
@@ -65,99 +80,171 @@
     </div>
 </section>
 
-
-<section class="section-padding pt-4">
+<section class="schedule-section spad">
     <div class="container">
         <div class="row">
-
-            <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-
-                <h3 class="post-title mt-2"><a href="blog-single.html" style="color: #c07070">Entered events</a></h3>
-                <div class="media border-bottom py-3 sidebar-post-item"
-                     th:each="enteredEvent:${enteredEvents}">
-                    <a href="#"><img class="mr-4" src="images/news/thumb-1.jpg" alt=""></a>
-                    <div class="media-body">
-                        <span th:text="${enteredEvent.getFormattedStartDate() + ' - ' + enteredEvent.getFormattedEndDate()}" class="text-muted letter-spacing text-uppercase font-sm"></span>
-                        <h4><a th:text="${enteredEvent.title}" th:href="@{/event/{idEvent}(idEvent=${enteredEvent.idEvent})}"></a></h4>
-                    </div>
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Current events</h2>
                 </div>
-
-                <br>
-
-                <h3 class="post-title mt-2" ><a href="blog-single.html" style="color: #c07070">Current events</a></h3>
-                <div class="media border-bottom py-3 sidebar-post-item"
-                     th:each="currentEvent:${currentEvents}">
-                    <a href="#"><img class="mr-4" src="images/news/thumb-1.jpg" alt=""></a>
-                    <div class="media-body">
-                        <span th:text="${currentEvent.getFormattedStartDate() + ' - ' + currentEvent.getFormattedEndDate()}" class="text-muted letter-spacing text-uppercase font-sm"></span>
-                        <h4><a th:text="${currentEvent.title}" th:href="@{/event/{idEvent}(idEvent=${currentEvent.idEvent})}"></a></h4>
-                    </div>
-                </div>
-
-                <br>
-
-                <h3 class="post-title mt-2"><a href="blog-single.html" style="color: #c07070">Ended events</a></h3>
-                <div class="media border-bottom py-3 sidebar-post-item"
-                     th:each="endedEvent:${endedEvents}">
-                    <a href="#"><img class="mr-4" src="images/news/thumb-1.jpg" alt=""></a>
-                    <div class="media-body">
-                        <span th:text="${endedEvent.getFormattedStartDate() + ' - ' + endedEvent.getFormattedEndDate()}" class="text-muted letter-spacing text-uppercase font-sm"></span>
-                        <h4><a th:text="${endedEvent.title}" th:href="@{/event/{idEvent}(idEvent=${endedEvent.idEvent})}"></a></h4>
-                    </div>
-                </div>
-
-
             </div>
-
-
-            <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
-                <div class="sidebar sidebar-right">
-                    <div class="sidebar-wrap mt-5 mt-lg-0">
-                        <div class="sidebar-widget about mb-5 text-center p-3">
-                            <div class="about-author">
-                                <img src="images/author.jpg" alt="" class="img-fluid">
-                            </div>
-                            <h4 class="mb-0 mt-4">Liam Mason</h4>
-                            <p>Travel Blogger</p>
-                            <p>I'm Liam, last year I decided to quit my job and travel the world. You can follow my journey on this
-                                blog!</p>
-                            <img src="images/liammason.png" alt="" class="img-fluid">
-                        </div>
-
-                        <div class="sidebar-widget follow mb-5 text-center">
-                            <h4 class="text-center widget-title">Follow Me</h4>
-                            <div class="follow-socials">
-                                <a href="#"><i class="ti-facebook"></i></a>
-                                <a href="#"><i class="ti-twitter"></i></a>
-                                <a href="#"><i class="ti-instagram"></i></a>
-                                <a href="#"><i class="ti-youtube"></i></a>
-                                <a href="#"><i class="ti-pinterest"></i></a>
-                            </div>
-                        </div>
-
-                        <div class="sidebar-widget mb-5 ">
-                            <h4 class="text-center widget-title">Trending Posts</h4>
-
-                            <div class="sidebar-post-item-big">
-                                <a href="blog-single.html"><img src="images/news/img-1.jpg" alt="" class="img-fluid"></a>
-                                <div class="mt-3 media-body">
-                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
-                                    <h4><a href="blog-single.html">Meeting With Clarissa, Founder Of Purple Conversation App</a></h4>
-                                </div>
-                            </div>
-
-
-
-                            <div class="media py-3 sidebar-post-item">
-                                <a href="#"><img class="mr-4" src="images/news/thumb-2.jpg" alt=""></a>
-                                <div class="media-body">
-                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
-                                    <h4><a href="blog-single.html">Vivamus molestie gravida turpis.</a></h4>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="schedule-tab">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="st-content" th:each="currentEvent:${currentEvents}">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="sc-pic">
+                                                <img th:src="@{'/event/getImage/' + ${currentEvent.images.get(0).idImage}}" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="sc-text">
+                                                <h4> <a th:text="${currentEvent.title}" th:href="@{/event/{idEvent}(idEvent=${currentEvent.idEvent})}"></a></h4>
+                                                <ul>
+                                                    <li>
+                                                        <i class="ti-user"></i>
+                                                        <span th:text="${currentEvent.userPlanner.username}"></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <ul class="sc-widget">
+                                                <li>
+                                                    <i class="ti-time"></i>
+                                                    <span th:text="|${currentEvent.getFormattedStartDate()} - ${currentEvent.getFormattedEndDate()}|"></span>
+                                                </li>
+                                                <li>
+                                                    <i class="ti-location-pin"></i>
+                                                    <span th:text="|${currentEvent.city.cityName} , ${currentEvent.location}|"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 
+<section class="schedule-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Future events</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="schedule-tab">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-10" role="tabpanel">
+                            <div class="st-content" th:each="futureEvent:${futureEvents}">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="sc-pic">
+                                                <img th:src="@{'/event/getImage/' + ${futureEvent.images.get(0).idImage}}" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="sc-text">
+                                                <h4 class="media-body"><a th:text="${futureEvent.title}" th:href="@{/event/{idEvent}(idEvent=${futureEvent.idEvent})}"></a></h4>
+                                                <ul>
+                                                    <li>
+                                                        <i class="ti-user"></i>
+                                                        <span th:text="${futureEvent.userPlanner.username}"></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <ul class="sc-widget">
+
+                                                <li>
+                                                    <i class="ti-time"></i>
+                                                    <span th:text="|${futureEvent.getFormattedStartDate()} - ${futureEvent.getFormattedEndDate()}|"></span>
+                                                </li>
+                                                <li>
+                                                    <i class="ti-location-pin"></i>
+                                                    <span th:text="|${futureEvent.city.cityName} , ${futureEvent.location}|"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="schedule-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Ended events</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="schedule-tab">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-12" role="tabpanel">
+                            <div class="st-content" th:each="endedEvent:${endedEvents}">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="sc-pic">
+                                                <img th:src="@{'/event/getImage/' + ${endedEvent.images.get(0).idImage}}" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="sc-text">
+                                                <h4 class="media-body"><a th:text="${endedEvent.title}" th:href="@{/event/{idEvent}(idEvent=${endedEvent.idEvent})}"></a></h4>
+                                                <ul>
+                                                    <li>
+                                                        <i class="ti-user"></i>
+                                                        <span th:text="${endedEvent.userPlanner.username}"></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <ul class="sc-widget">
+
+                                                <li>
+                                                    <i class="ti-time"></i>
+                                                    <span th:text="|${endedEvent.getFormattedStartDate()} - ${endedEvent.getFormattedEndDate()}|"></span>
+                                                </li>
+                                                <li>
+                                                    <i class="ti-location-pin"></i>
+                                                    <span th:text="|${endedEvent.city.cityName} , ${endedEvent.location}|"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -167,6 +254,25 @@
 </section>
 
 
+
+<!-- THEME JAVASCRIPT FILES
+================================================== -->
+<!-- initialize jQuery Library -->
+<script th:src="@{/plugins/jquery/jquery.js}"></script>
+<!-- Bootstrap jQuery -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/popper.min.js}"></script>
+<!-- Owl caeousel -->
+<script th:src="@{/plugins/owl-carousel/owl.carousel.min.js}"></script>
+<script th:src="@{/plugins/slick-carousel/slick.min.js}"></script>
+<script th:src="@{/plugins/magnific-popup/magnific-popup.js}"></script>
+<!-- Instagram Feed Js -->
+<script th:src="@{/plugins/instafeed-js/instafeed.min.js}"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+<script th:src="@{/plugins/google-map/gmap.js}"></script>
+<!-- main js -->
+<script th:src="@{/js/custom.js}"></script>
 
 <!-- THEME JAVASCRIPT FILES
 ================================================== -->

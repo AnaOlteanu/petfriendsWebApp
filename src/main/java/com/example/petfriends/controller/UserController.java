@@ -50,6 +50,11 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "access-denied";
+    }
+
     @GetMapping("/register")
     public String registerForm(Model model){
         model.addAttribute("userPet", new UserPetFormDto());
@@ -59,14 +64,15 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("userPet") UserPetFormDto userPetFormDto,
-                               BindingResult bindingResult,
-                               @RequestParam("userimages")MultipartFile[] userImages,
-                               @RequestParam("petimages")MultipartFile[] petImages
-                               ) throws IOException {
+                           BindingResult bindingResult,
+                           @RequestParam("userimages")MultipartFile[] userImages,
+                           @RequestParam("petimages")MultipartFile[] petImages,
+                           Model model) throws IOException {
 
         log.info("Binding results ", bindingResult.hasErrors());
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("cities", cityService.findAllCities());
             return "register";
         }
 
@@ -94,11 +100,16 @@ public class UserController {
         User user = userService.findByUsername(username);
         List<Post> posts = postService.findByUserId(user.getIdUser());
         User authenticatedUser = userService.getAuthenticatedUser();
+        Long numberFollowing = (long) user.getFollowedUsers().size();
+        Long numberFollowers = userService.getNumberFollowers(user);
         ModelAndView modelAndView = new ModelAndView("user-profile");
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("user", user);
         modelAndView.addObject("isFollowed", userService.isFollowed(authenticatedUser.getIdUser(), user.getIdUser()));
-        log.info("isFollwoed {} ", userService.isFollowed(authenticatedUser.getIdUser(), user.getIdUser()));
+        modelAndView.addObject("numberFollowers", numberFollowers);
+        modelAndView.addObject("numberFollowing", numberFollowing);
+
+        log.info("nr followers is {} and nr following is {} ", numberFollowers, numberFollowing);
         return modelAndView;
     }
 
@@ -147,6 +158,30 @@ public class UserController {
 
         log.info("User with username {} unfollowed user {}", sourceUser.getUsername(), followedUser.getUsername());
         return "redirect:/user/" + followedUser.getUsername();
+    }
+
+    @GetMapping("/followers/{username}")
+    public ModelAndView getFollowers(@PathVariable("username") String username){
+
+        User user = userService.findByUsername(username);
+        List<User> followers = userService.getFollowers(user.getIdUser());
+        ModelAndView modelAndView = new ModelAndView("users-list");
+        modelAndView.addObject("users", followers);
+        modelAndView.addObject("followers", true);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/following/{username}")
+    public ModelAndView getFollowings(@PathVariable("username") String username){
+
+        User user = userService.findByUsername(username);
+        List<User> following = user.getFollowedUsers();
+        ModelAndView modelAndView = new ModelAndView("users-list");
+        modelAndView.addObject("users", following);
+        modelAndView.addObject("following", true);
+
+        return modelAndView;
     }
 
 

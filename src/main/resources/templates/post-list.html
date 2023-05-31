@@ -46,7 +46,7 @@
           </div>
 
           <div class="post-content">
-            <p>On this page you can see the recents posts of your friends.</p>
+            <p>On this page you can see the recent posts of your friends.</p>
           </div>
         </div>
       </div>
@@ -66,6 +66,7 @@
                     placeholder="What are you thinking about..."
                     th:field="*{content}"></textarea>
         </div>
+
         <div class="col-md-6">
           <div class="form-group">
             <span class="has-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red;"></span>
@@ -73,6 +74,7 @@
                     th:field="*{title}">
           </div>
         </div>
+
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">Select Images</label>
@@ -106,10 +108,9 @@
                 <div class="post-meta">
                   <ul class="list-inline">
                     <li class="post-like list-inline-item">
-												<span class="font-sm letter-spacing-1 text-uppercase"><i class="ti-time mr-2"></i>3 min
-													read</span>
+                      <i class="ti-time mr-2"></i>
+                      <span th:text="${post.getFormattedDate()}" class="font-sm letter-spacing-1 text-uppercase"></span>
                     </li>
-                    <li class="post-view list-inline-item letter-spacing-1">259 Views</li>
                   </ul>
                 </div>
                 <div class="post-content">
@@ -123,13 +124,19 @@
 
         <div class="pagination mt-5 pt-4">
           <ul class="list-inline">
-            <li class="list-inline-item"><a href="#" class="active">1</a></li>
-            <li class="list-inline-item"><a href="#">2</a></li>
-            <li class="list-inline-item"><a href="#">3</a></li>
-            <li class="list-inline-item"><a href="#" class="prev-posts"><i class="ti-arrow-right"></i></a></li>
+            <li class="list-inline-item" th:if="${postPage.totalPages > 0}"
+                th:each="pageNumber:${#numbers.sequence(1,T(java.lang.Math).min(5,postPage.totalPages))}">
+              <a th:href="@{/post/list(size=${postPage.size}, page=${pageNumber})}"
+                  th:text="${pageNumber}" th:class="${pageNumber==postPage.number+1} ? active"></a>
+            </li>
+<!--            <li class="list-inline-item" th:if="${postPage.totalPages>0}"><a href="#">2</a></li>-->
+<!--            <li class="list-inline-item"><a href="#">3</a></li>-->
+<!--            <li class="list-inline-item"><a href="#" class="prev-posts"><i class="ti-arrow-right"></i></a></li>-->
           </ul>
         </div>
       </div>
+
+
       <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
         <div class="sidebar sidebar-right">
           <div class="sidebar-wrap mt-5 mt-lg-0">

@@ -38,7 +38,18 @@
           <li class="nav-item"><a th:href="@{/}" class="nav-link">Home</a>
           </li>
           <li class="nav-item" sec:authorize="isAnonymous() or (isAuthenticated() and hasRole('USER'))"><a th:href="@{/post/list}" class="nav-link">Posts</a></li>
-          <li class="nav-item" sec:authorize="isAnonymous() or (isAuthenticated() and hasRole('USER'))"><a th:href="@{/event/list}" class="nav-link">Events</a></li>
+          <li class="nav-item dropdown" sec:authorize="isAnonymous() or (isAuthenticated() and hasRole('USER'))">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Events
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+              <a class="dropdown-item" th:href="@{/event/list}">All events</a>
+              <a class="dropdown-item" th:href="@{/event/myevents}">My events</a>
+              <a class="dropdown-item" th:href="@{/event/recommendations/{username}(username=${#authentication.getName()})}">Recommended events</a>
+            </div>
+          </li>
+
           <li class="nav-item" sec:authorize="isAnonymous() or (isAuthenticated() and hasRole('USER'))"><a th:href="@{/register}" class="nav-link">Register</a></li>
           <li class="nav-item" sec:authorize="isAnonymous()"><a th:href="@{/login}" class="nav-link">Login</a></li>
           <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -48,6 +59,12 @@
           </li>
           <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('USER')">
             <a th:href="@{/user/{username}(username=${#authentication.getName()})}" class="nav-link">My profile</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('ADMIN')">
+            <a th:href="@{/admin/petShops}" class="nav-link">PetShops</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('ADMIN')">
+            <a th:href="@{/admin/addPetShop}" class="nav-link">Add petshop</a>
           </li>
           <li class="nav-item" sec:authorize="isAuthenticated() and hasRole('ADMIN')">
             <a th:href="@{/admin/requests}" class="nav-link">Requests</a>

@@ -29,16 +29,14 @@
 <section class="single-block-wrapper section-padding">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-md-12">
                         <article class="post">
                             <div class="post-header mb-5 text-center">
                                 <div class="meta-cat">
                                     <a class="post-category font-extra text-color text-uppercase font-sm letter-spacing-1"
-                                       href="#">Health ,</a>
-                                    <a class="post-category font-extra text-color text-uppercase font-sm letter-spacing-1"
-                                       href="#">lifestyle</a>
+                                       href="#">Post</a>
                                 </div>
                                 <h2 th:text="${post.title}" class="post-title mt-2">
                                 </h2>
@@ -53,8 +51,8 @@
                             <div class="post-img mb-4">
                                 <div class="post_gallery owl-carousel owl-theme">
                                     <div class="item" th:each="image:${post.images}">
-                                        <a href="#"><img class="img-fluid" th:src="@{'/post/getImage/' + ${image.idImage}}"
-                                                         alt="" /></a>
+                                        <img class="img-fluid" th:src="@{'/post/getImage/' + ${image.idImage}}"
+                                                         alt="" />
                                     </div>
                                 </div>
                             </div>
@@ -109,6 +107,9 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+
                 <div class="post-author d-flex my-5">
                     <div class="author-img">
                         <img alt="" th:src="@{'/user/getImage/' + ${post.user.images.get(0).idImage}}" class="avatar avatar-100 photo" width="100"
@@ -118,6 +119,7 @@
                     <div class="author-content pl-4">
                         <h4 class="mb-3"><a th:text="${post.user.username}" th:href="@{/user/{username}(username=${post.user.username})}" title="" rel="author" class="text-capitalize"></a>
                         </h4>
+                        <span th:text="${post.getFormattedDate()}" class="date-comm font-sm text-capitalize text-color"></span>
                         <p th:text="${post.content}"></p>
                     </div>
                 </div>
@@ -132,15 +134,14 @@
                             <a th:href="@{/user/{username}(username=${postComment.user.username})}">
                                 <h4 th:text="${postComment.user.username}" class="mb-0"></h4>
                             </a>
-                            <span th:text="${postComment.getFormattedDate()}" class="date-comm font-sm text-capitalize text-color"><i
-                                    class="ti-time mr-2"></i></span>
+                            <span th:text="${postComment.getFormattedDate()}" class="date-comm font-sm text-capitalize text-color"></span>
 
                             <div class="comment-content mt-3">
                                 <p th:text="${postComment.content}"></p>
                             </div>
-                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0" th:if="${post.user.username == #authentication.getName()}">
                                 <a th:href="@{/comment/delete/{idComment}(idComment=${postComment.idComment},idPost=${post.idPost},username=${postComment.user.username})}"
-                                   class="text-underline " style="margin-left: 20px;">
+                                   rel="nofollow">
                                     Delete <i class="ti-trash"></i>
                                 </a>
 
@@ -168,6 +169,8 @@
             </div>
         </div>
     </div>
+
+
 </section>
 
 <!-- THEME JAVASCRIPT FILES

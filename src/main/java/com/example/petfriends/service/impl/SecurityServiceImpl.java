@@ -78,7 +78,7 @@ public class SecurityServiceImpl implements UserDetailsService {
         } else if (authorities.size() == 0) {
             return new HashSet<>();
         } else {
-            log.info("Role {} ", authorities.stream()
+            log.info("Role is {} ", authorities.stream()
                     .map(Role::toString)
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toSet()));

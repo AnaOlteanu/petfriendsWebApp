@@ -31,4 +31,9 @@ public class City {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
     private List<Event> events = new ArrayList<>();
+
+    @OneToMany(mappedBy = "city")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
+    private List<Petshop> petshops = new ArrayList<>();
 }
