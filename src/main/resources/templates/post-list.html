@@ -189,7 +189,7 @@
 <script th:inline="javascript">
   function searchByUsername() {
     var searchInput = document.getElementById("searchInput").value;
-    console.log("search input is ", searchInput);
+
     var url = '/user/search?searchUserInput=' + encodeURIComponent(searchInput);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {

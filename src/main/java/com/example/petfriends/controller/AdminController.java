@@ -59,14 +59,14 @@ public class AdminController {
     }
 
     @GetMapping("/admin/addPetShop")
-    public String addPethopForm(Model model){
+    public String addPetshopForm(Model model){
         model.addAttribute("petshop", new Petshop());
         model.addAttribute("cities", cityService.findAllCities());
         return "admin-petshop-add";
     }
 
     @PostMapping("/admin/addPetShop")
-    public String submitEvent(@Valid @ModelAttribute("petshop") Petshop petshop,
+    public String addPetshop(@Valid @ModelAttribute("petshop") Petshop petshop,
                               BindingResult bindingResult,
                               Model model) throws IOException {
 
