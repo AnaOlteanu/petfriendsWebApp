@@ -27,8 +27,8 @@ public class SimilarityCalculator {
 
     private double calculateCosineSimilarity(Map<String, Double> userProfile, Map<String, Double> eventTFIDF) {
         double dotProduct = 0.0;
-        double userProfileMagnitude = 0.0;
-        double eventMagnitude = 0.0;
+        double userNorm = 0.0;
+        double eventNorm = 0.0;
 
         log.info("========COSINE========");
 
@@ -42,20 +42,20 @@ public class SimilarityCalculator {
             log.info("event value {}", eventValue);
 
             dotProduct += userProfileValue * eventValue;
-            userProfileMagnitude += Math.pow(userProfileValue, 2);
-            eventMagnitude += Math.pow(eventValue, 2);
+            userNorm += Math.pow(userProfileValue, 2);
+            eventNorm += Math.pow(eventValue, 2);
 
-            log.info("user magnitude {}", userProfileMagnitude);
-            log.info("event magnitude {}", eventMagnitude);
+            log.info("user norm {}", userNorm);
+            log.info("event norm {}", eventNorm);
         }
 
-        userProfileMagnitude = Math.sqrt(userProfileMagnitude);
-        eventMagnitude = Math.sqrt(eventMagnitude);
+        userNorm = Math.sqrt(userNorm);
+        eventNorm = Math.sqrt(eventNorm);
 
 
-        if (userProfileMagnitude > 0 && eventMagnitude > 0) {
-            log.info("term score {}", dotProduct / (userProfileMagnitude * eventMagnitude));
-            return dotProduct / (userProfileMagnitude * eventMagnitude);
+        if (userNorm > 0 && eventNorm > 0) {
+            log.info("term score {}", dotProduct / (userNorm * eventNorm));
+            return dotProduct / (userNorm * eventNorm);
         } else {
             return 0.0;
         }

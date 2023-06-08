@@ -16,9 +16,8 @@ public class UserProfileModel {
 
         String[] preprocessedPetBreed = textProcessor.preprocessTextForAttributes(petBreed);
         for(String p : preprocessedPetBreed){
-            userProfile.put(p, 0.05);
+            userProfile.put(p, 0.2);
         }
-
 
         for (Long eventId : userEventIds) {
             Map<String, Double> eventTFIDF = tfidfMap.get(eventId);

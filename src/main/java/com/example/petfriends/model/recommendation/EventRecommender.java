@@ -21,8 +21,6 @@ public class EventRecommender {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private EventService eventService;
 
 
     public List<Event> generateEventRecommendations(Long idUser, int numRecommendations, List<Event> events) {

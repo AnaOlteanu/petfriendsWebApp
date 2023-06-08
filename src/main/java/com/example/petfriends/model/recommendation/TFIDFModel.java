@@ -7,7 +7,7 @@ import java.util.*;
 @Slf4j
 public class TFIDFModel {
     public Map<Long, Map<String, Double>> calculateTFIDF(List<EventPreprocessed> events, String petBreed) {
-        Map<String, Integer> documentFrequencies = new HashMap<>();
+        Map<Long, Map<String, Integer>> documentFrequencies = new HashMap<>();
 
         TextProcessor textProcessor = new TextProcessor();
 
@@ -23,18 +23,45 @@ public class TFIDFModel {
             terms.addAll(Arrays.asList(locationSplit));
             terms.add(event.getCity());
 
+            Map<String, Integer> termFrequencies = documentFrequencies.getOrDefault(event.getIdEvent(), new HashMap<>());
 
             for (String term : terms) {
-                documentFrequencies.put(term, documentFrequencies.getOrDefault(term, 0) + 1);
+                termFrequencies.put(term, termFrequencies.getOrDefault(term, 0) + 1);
             }
+
+            documentFrequencies.put(event.getIdEvent(), termFrequencies);
         }
         log.info("document frequencies {}", documentFrequencies);
-
 
 
         Map<Long, Map<String, Double>> tfidfMap = new HashMap<>();
 
         String[] petBreedSplit = textProcessor.preprocessTextForAttributes(petBreed);
+
+        // calculate TF for each event
+        Map<Long, Map<String, Double>> tfMap = new HashMap<>();
+
+        for(Map.Entry<Long, Map<String, Integer>> entry : documentFrequencies.entrySet()){
+            Long eventId = entry.getKey();
+            Map<String, Integer> termFrequencies = entry.getValue();
+
+            for (Map.Entry<String, Integer> termEntry : termFrequencies.entrySet()) {
+                String term = termEntry.getKey();
+                Integer frequency = termEntry.getValue();
+                Double tfScore = (double)frequency/termFrequencies.size();
+
+                if(tfMap.containsKey(eventId)){
+                    tfMap.get(eventId).put(term, tfScore);
+                }
+                else {
+                    Map<String, Double> termTFScoreMap = new HashMap<>();
+                    termTFScoreMap.put(term, tfScore);
+                    tfMap.put(eventId, termTFScoreMap);
+                }
+            }
+        }
+
+        log.info("tf map {}", tfMap);
 
         // Calculate TF-IDF values for each event
         for (EventPreprocessed event : events) {
@@ -52,18 +79,32 @@ public class TFIDFModel {
 
             String[] termsArray = terms.toArray(new String[terms.size()]);
 
-            int totalTerms = termsArray.length;
 
             for (String term : termsArray) {
-                int termFrequency = countTermFrequency(termsArray, term);
-                double tf = (double) termFrequency / totalTerms;
-                double idf = calculateIDF(documentFrequencies.get(term), events.size());
-                double tfidf = tf * idf;
+                Map<String, Double> tfEntry = tfMap.get(event.getIdEvent());
+
+                log.info("term frequency for term {} is {} ", term, tfEntry.get(term));
+
+                Integer noDocumentsContainingTerm = 0;
+                for (Map.Entry<Long, Map<String, Integer>> entry : documentFrequencies.entrySet())
+                {
+                    Map<String, Integer> termFrequencies = entry.getValue();
+                    for (Map.Entry<String, Integer> termEntry : termFrequencies.entrySet()) {
+                        String termDoc = termEntry.getKey();
+                        if(termDoc.equalsIgnoreCase(term)){
+                            noDocumentsContainingTerm++;
+                            break;
+                        }
+                    }
+                }
+
+                double idf = calculateIDF(noDocumentsContainingTerm, events.size());
+                double tfidf = tfEntry.get(term) * idf;
+                log.info("tfidf 1 for term {} is {} ", term, tfidf);
 
                 for (String p: petBreedSplit) {
                     if(term.equalsIgnoreCase(p)) {
-                        log.info("AM INTRAT");
-                        tfidf = 0.05;
+                        tfidf = 0.3;
                     }
                 }
 
@@ -80,17 +121,8 @@ public class TFIDFModel {
         return tfidfMap;
     }
 
-    private int countTermFrequency(String[] terms, String term) {
-        int frequency = 0;
-        for (String t : terms) {
-            if (t.equals(term)) {
-                frequency++;
-            }
-        }
-        return frequency;
-    }
 
-    private double calculateIDF(int documentFrequency, int totalDocuments) {
-        return Math.log((double) totalDocuments / (documentFrequency + 1));
+    private double calculateIDF(int noDocumentsContainingTerm, int totalDocuments) {
+        return Math.log((double) totalDocuments / (noDocumentsContainingTerm + 1));
     }
 }
