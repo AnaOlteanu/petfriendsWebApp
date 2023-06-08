@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ModelAndView handlerNotFoundException(Exception exception){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.getModel().put("exception",exception);
+        modelAndView.getModel().put("exception",exception.getMessage());
         modelAndView.setViewName("notfound");
         return modelAndView;
     }

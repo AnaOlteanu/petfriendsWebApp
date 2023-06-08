@@ -10,8 +10,10 @@ import java.util.List;
 
 @Service
 public class PetfriendlySpaceServiceImpl implements PetfriendlySpaceService {
+
     @Autowired
     private PetfriendlySpaceRepository petfriendlySpaceRepository;
+
     @Override
     public void save(PetfriendlySpace petfriendlySpace) {
         petfriendlySpaceRepository.save(petfriendlySpace);

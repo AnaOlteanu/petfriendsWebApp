@@ -129,9 +129,6 @@
               <a th:href="@{/post/list(size=${postPage.size}, page=${pageNumber})}"
                   th:text="${pageNumber}" th:class="${pageNumber==postPage.number+1} ? active"></a>
             </li>
-<!--            <li class="list-inline-item" th:if="${postPage.totalPages>0}"><a href="#">2</a></li>-->
-<!--            <li class="list-inline-item"><a href="#">3</a></li>-->
-<!--            <li class="list-inline-item"><a href="#" class="prev-posts"><i class="ti-arrow-right"></i></a></li>-->
           </ul>
         </div>
       </div>

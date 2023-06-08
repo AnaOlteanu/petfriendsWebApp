@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
         Optional<Post> postOptional = postRepository.findById(idPost);
         if(postOptional.isEmpty()) {
             log.info("Error when trying to find the post with id {}", idPost);
-            throw new NotFoundException("Post with id " + idPost + "not found!");
+            throw new NotFoundException("Post with id " + idPost + " not found!");
         }
         log.info("Returned post with id {}", idPost);
         return postOptional.get();
@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
     public void deleteById(Long idPost) {
         Optional<Post> postOptional = postRepository.findById(idPost);
         if(postOptional.isEmpty()) {
-            throw new NotFoundException("Post with id: " + idPost + "not found");
+            throw new NotFoundException("Post with id: " + idPost + " not found");
         }
 
         Post post = postOptional.get();
@@ -76,12 +76,11 @@ public class PostServiceImpl implements PostService {
 
         return postRepository.findByUserIn(followedUserIds);
 
-
     }
 
     @Override
     public List<Post> findByUserId(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with id:" + userId + "does not exist!"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with id:" + userId + " does not exist!"));
         List<Post> posts = postRepository.findByUser(user);
 
         return posts;
@@ -92,7 +91,7 @@ public class PostServiceImpl implements PostService {
         Post post = findById(idPost);
         Optional<User> userOptional = userRepository.findByUsername(username);
         if(userOptional.isEmpty()) {
-            throw new NotFoundException("User with username: " +  username + "not found");
+            throw new NotFoundException("User with username: " +  username + " not found");
         }
         return userOptional.get().getLikedPosts().contains(post);
     }

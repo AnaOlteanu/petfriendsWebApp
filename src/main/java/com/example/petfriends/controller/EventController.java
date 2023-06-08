@@ -201,7 +201,7 @@ public class EventController {
 
     @PreAuthorize("#username == authentication.principal.username or hasRole('ROLE_ADMIN')")
     @RequestMapping("/event/delete/{idEvent}")
-    public String deletePostById(@PathVariable("idEvent") Long idEvent,
+    public String deleteEventById(@PathVariable("idEvent") Long idEvent,
                                  @RequestParam("username") String username){
         eventService.deleteById(idEvent);
         log.info("User {} successfully deleted event with id {}", username, idEvent);
