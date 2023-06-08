@@ -102,7 +102,6 @@ public class PostController {
     public String getPostById(@PathVariable("idPost") Long idPost, Model model){
         User authenticatedUser = userService.getAuthenticatedUser();
         model.addAttribute("post", postService.findById(idPost));
-//        model.addAttribute("lastPosted", postService.findLastPosted());
         model.addAttribute("isLiked", postService.isLiked(idPost,authenticatedUser.getUsername()));
         model.addAttribute("numberLikes", postService.getNumberLikes(idPost));
         model.addAttribute("comment", new Comment());

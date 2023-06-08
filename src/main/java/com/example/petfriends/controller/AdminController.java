@@ -27,8 +27,6 @@ import java.util.List;
 @Controller
 public class AdminController {
 
-    @Autowired
-    private AdminService adminService;
 
     @Autowired
     private EventPlannerRequestService eventPlannerRequestService;
@@ -68,7 +66,7 @@ public class AdminController {
     @PostMapping("/admin/addPetShop")
     public String addPetshop(@Valid @ModelAttribute("petshop") Petshop petshop,
                               BindingResult bindingResult,
-                              Model model) throws IOException {
+                              Model model) {
 
 
         if (bindingResult.hasErrors()){

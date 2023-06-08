@@ -25,9 +25,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/login.do*").permitAll()
                 .antMatchers("/resources/**", "/static/**", "/plugins/**", "/css/**", "/js/**", "/images/**","/fonts/**", "/jquery/**", "/bootstrap/**",
                         "/register", "/index", "/").permitAll()
-                .antMatchers("/admin/requests", "/admin/*").hasRole("ADMIN")
+                .antMatchers( "/admin/*").hasRole("ADMIN")
                 .antMatchers("/event/add", "/event/edit/*", "/event/delete/*").hasRole("EVENT_PLANNER")
-                .antMatchers("/post/*", "/user/*","/event/*", "/comment/{idPost}/user/{username}").hasRole("USER")
+                .antMatchers("/post/*", "/user/*","/event/*", "/comment/{idPost}/user/{username}",
+                        "/petfriendly/*", "/saveLocation", "/petshop/*", "/becomePlanner/{idUser}",
+                        "/request/*", "/follow/*", "/unfollow/*", "/followers/*", "/following/*",
+                        "/like/*", "/removeLike/*").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
