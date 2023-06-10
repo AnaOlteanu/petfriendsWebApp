@@ -25,14 +25,12 @@ public class UserProfileModel {
                 for (Map.Entry<String, Double> entry : eventTFIDF.entrySet()) {
                     String term = entry.getKey();
                     double tfidf = entry.getValue();
-
                     userProfile.put(term, userProfile.getOrDefault(term, 0.0) + tfidf);
                 }
             }
         }
 
-        log.info("User profile vector before normalization {} ", userProfile);
-        // Normalize the user profile vector
+        // Normalize user profile vector
         normalizeUserProfile(userProfile);
 
         log.info("User profile vector after normalization {} ", userProfile);

@@ -108,11 +108,23 @@ public class PostController {
         return "post-single";
     }
 
-    @PreAuthorize("#username == authentication.principal.username or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#username == authentication.principal.username")
     @RequestMapping("/post/delete/{idPost}")
     public String deletePostById(@PathVariable("idPost") Long idPost,
                              @RequestParam("username") String username){
+
+
+        Post post = postService.findById(idPost);
+        Set<User> users = post.getUsersLike();
+
+        for(User user : users) {
+            post.removeUser(user);
+            user.removeLikedPost(post);
+            userService.saveWithoutHash(user);
+        }
+
         postService.deleteById(idPost);
+
         log.info("User {} successfully deleted post with id {}", username, idPost);
         return "redirect:/user/" + username;
     }

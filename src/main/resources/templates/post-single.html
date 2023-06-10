@@ -139,7 +139,7 @@
                             <div class="comment-content mt-3">
                                 <p th:text="${postComment.content}"></p>
                             </div>
-                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0" th:if="${post.user.username == #authentication.getName()}">
+                            <div class="comment-meta mt-4 mt-lg-0 mt-md-0" th:if="${postComment.user.username == #authentication.getName()}">
                                 <a th:href="@{/comment/delete/{idComment}(idComment=${postComment.idComment},idPost=${post.idPost},username=${postComment.user.username})}"
                                    rel="nofollow">
                                     Delete <i class="ti-trash"></i>

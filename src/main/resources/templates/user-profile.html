@@ -41,7 +41,7 @@
                   <a class="post-category font-extra text-color text-uppercase font-sm letter-spacing-1"
                      th:href="@{/user/{username}(username=${user.username})}">Our Profile</a>
                 </div>
-                <h2 th:text="${'This is us, my ' + user.pet.type + ' ' + user.pet.name + ' and me!'}" class="post-title mt-2">
+                <h2 th:text="${'This is us, my ' + user.pet.type.toString().toLowerCase() + ' ' + user.pet.name + ' and me!'}" class="post-title mt-2">
                 </h2>
               </div>
 
@@ -58,11 +58,8 @@
 
               <div class="post-body">
                 <div class="entry-content">
-                  <h2 class="mt-4 mb-3">Perfect design & code delivered to you</h2>
-                  <p> The Sagoths had begun to take notice of his habit of declaiming throughout
-                    entire marches. One of them asked him what he was saying—to whom he was
-                    talking. The question gave me an idea, so I answered quickly before Perry
-                    could say anything.</p>
+                  <h2 th:text="${'My dear ' + user.pet.type.toString().toLowerCase() + ' ' + user.pet.breed.toLowerCase() + ' ' + user.pet.name }" class="mt-4 mb-3"></h2>
+                  <p th:text="${'My pet is a ' + user.pet.gender.description.toLowerCase() + ' and it is ' + user.pet.age + ' years old.'}"></p>
 
                 </div>
               </div>
@@ -81,7 +78,7 @@
               <h4 th:text="${user.firstName + ' ' + user.lastName}" class="mb-0 mt-4"></h4>
               <p></p>
               <p th:text="${'Hey there. My name is ' + user.firstName + ' and my pet is a beautiful ' + user.pet.breed + ' named ' + user.pet.name +
-              '. He is ' + user.pet.age + ' years old. We are from ' + user.city.cityName}"></p>
+                ' We are from ' + user.city.cityName}"></p>
 
               <div class="sidebar-widget follow mb-5 text-center" th:if="${user.username}!=${#authentication.getName()}">
                   <a class="btn btn-grey mt-3"

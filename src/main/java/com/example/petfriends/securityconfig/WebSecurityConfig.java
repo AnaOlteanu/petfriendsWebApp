@@ -26,6 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**", "/static/**", "/plugins/**", "/css/**", "/js/**", "/images/**","/fonts/**", "/jquery/**", "/bootstrap/**",
                         "/register", "/index", "/").permitAll()
                 .antMatchers( "/admin/*", "/request/*").hasRole("ADMIN")
+                .antMatchers("/user/{username}").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/event/add", "/event/edit/*", "/event/delete/*").hasRole("EVENT_PLANNER")
                 .antMatchers("/post/*", "/user/*","/event/*", "/comment/{idPost}/user/{username}",
                         "/petfriendly/*", "/saveLocation", "/petshop/*", "/becomePlanner/{idUser}",

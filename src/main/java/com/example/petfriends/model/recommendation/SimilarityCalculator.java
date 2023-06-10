@@ -54,7 +54,6 @@ public class SimilarityCalculator {
 
 
         if (userNorm > 0 && eventNorm > 0) {
-            log.info("term score {}", dotProduct / (userNorm * eventNorm));
             return dotProduct / (userNorm * eventNorm);
         } else {
             return 0.0;

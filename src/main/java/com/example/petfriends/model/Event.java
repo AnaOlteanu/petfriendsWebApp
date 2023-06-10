@@ -67,7 +67,7 @@ public class Event {
 
     @ManyToMany(mappedBy = "eventsJoined", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
-    private List<User> users = new ArrayList<>();
+    private Set<User> users = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "event")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -82,5 +82,10 @@ public class Event {
     public String getFormattedEndDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return endDate.format(formatter);
+    }
+
+    public void removeUser(User user) {
+        user.getEventsJoined().remove(this);
+        users.remove(user);
     }
 }

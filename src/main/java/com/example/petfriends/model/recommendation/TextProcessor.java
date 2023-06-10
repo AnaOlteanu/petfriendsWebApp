@@ -1,14 +1,18 @@
 package com.example.petfriends.model.recommendation;
 
 import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.StopwordAnalyzerBase;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.ro.RomanianAnalyzer;
 
 import java.util.Arrays;
 import java.util.Locale;
 
 public class TextProcessor {
 
-    private static final CharArraySet STOP_WORDS = EnglishAnalyzer.getDefaultStopSet();
+    private static final CharArraySet ENGLISH_STOP_WORDS = EnglishAnalyzer.getDefaultStopSet();
+    private static final StopwordAnalyzerBase analyzer = new RomanianAnalyzer();
+    private static final CharArraySet ROMANIAN_STOP_WORDS = analyzer.getStopwordSet();
 
     public static String preprocessText(String text) {
         // Remove punctuation
@@ -23,14 +27,14 @@ public class TextProcessor {
         // Remove stop words
         words = removeStopWords(words);
 
-        // Join the words back into a single string
         return String.join(" ", words);
     }
 
     private static String[] removeStopWords(String[] words) {
         return Arrays.stream(words)
-                .filter(word -> !STOP_WORDS.contains(word))
+                .filter(word -> !ROMANIAN_STOP_WORDS.contains(word) && !ENGLISH_STOP_WORDS.contains(word))
                 .toArray(String[]::new);
+
     }
 
     public static String[] preprocessTextForAttributes(String text){

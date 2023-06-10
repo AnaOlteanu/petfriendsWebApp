@@ -56,7 +56,6 @@ public class Post {
     private Set<User> usersLike = new LinkedHashSet<>();
 
     public String getFormattedDate() {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
         return date.format(formatter);
     }

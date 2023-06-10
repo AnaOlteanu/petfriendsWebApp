@@ -54,7 +54,7 @@ public class CommentController {
 
     }
 
-    @PreAuthorize("#username == authentication.principal.username or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#username == authentication.principal.username")
     @RequestMapping("/comment/delete/{idComment}")
     public String deleteById(@PathVariable("idComment") Long idComment,
                              @RequestParam("idPost") Long idPost,

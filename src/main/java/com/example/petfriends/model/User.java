@@ -106,7 +106,7 @@ public class User {
             joinColumns = @JoinColumn(name = "id_user"),
             inverseJoinColumns = @JoinColumn(name = "id_event"))
     @ToString.Exclude
-    private List<Event> eventsJoined;
+    private Set<Event> eventsJoined;
 
     @OneToMany(mappedBy = "userPlanner")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -132,6 +132,11 @@ public class User {
     public void removeLikedPost(Post post) {
         post.getUsersLike().remove(this);
         likedPosts.remove(post);
+    }
+
+    public void removeJoinedEvent(Event event) {
+        event.getUsers().remove(this);
+        eventsJoined.remove(event);
     }
 
 }

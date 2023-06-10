@@ -10,6 +10,8 @@ import com.example.petfriends.model.mapper.UserPetFormMapper;
 import com.example.petfriends.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -99,17 +101,31 @@ public class UserController {
     public ModelAndView getUserByUsername(@PathVariable("username") String username) {
         User user = userService.findByUsername(username);
         List<Post> posts = postService.findByUserId(user.getIdUser());
-        User authenticatedUser = userService.getAuthenticatedUser();
         Long numberFollowing = (long) user.getFollowedUsers().size();
         Long numberFollowers = userService.getNumberFollowers(user);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         ModelAndView modelAndView = new ModelAndView("user-profile");
+        log.info("autoritate {} ", authentication.getAuthorities().contains("ROLE_ADMIN"));
+        if(authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))){
+
+            modelAndView.addObject("posts", posts);
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("isFollowed", null);
+            modelAndView.addObject("numberFollowers", numberFollowers);
+            modelAndView.addObject("numberFollowing", numberFollowing);
+            return modelAndView;
+        }
+
+        User authenticatedUser = userService.getAuthenticatedUser();
+
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("user", user);
         modelAndView.addObject("isFollowed", userService.isFollowed(authenticatedUser.getIdUser(), user.getIdUser()));
         modelAndView.addObject("numberFollowers", numberFollowers);
         modelAndView.addObject("numberFollowing", numberFollowing);
 
-        log.info("nr followers is {} and nr following is {} ", numberFollowers, numberFollowing);
         return modelAndView;
     }
 

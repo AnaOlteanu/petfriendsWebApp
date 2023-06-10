@@ -54,7 +54,7 @@
                     <tbody>
                     <tr th:each="request:${requests}">
                         <td th:text="${request.idEventPlannerRequest}"></td>
-                        <td th:text="${request.user.username}"></td>
+                        <td ><a th:text="${request.user.username}" th:href="@{/user/{username}(username=${request.user.username})}"></a></td>
                         <td th:text="${request.status}"></td>
                         <td>
                             <ul class="list-unstyled" th:if="${#authentication.getName()} != ${request.user.username}">

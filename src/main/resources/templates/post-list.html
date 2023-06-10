@@ -103,7 +103,9 @@
                 <div class="meta-cat">
                   <span th:text="${post.user.username}" class="letter-spacing cat-name font-extra text-uppercase font-sm"></span>
                 </div>
-                <h3  class="post-title mt-2"><a th:text="${post.title}" th:href="@{/post/{idPost}(idPost=${post.idPost})}"></a></h3>
+                <h3  class="post-title mt-2">
+                  <a th:text="${post.title}" th:href="@{/post/{idPost}(idPost=${post.idPost})}"></a>
+                </h3>
 
                 <div class="post-meta">
                   <ul class="list-inline">

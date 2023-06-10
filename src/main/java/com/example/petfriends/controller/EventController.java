@@ -17,7 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.example.petfriends.model.RoleEnum.ROLE_EVENT_PLANNER;
 
@@ -113,7 +115,7 @@ public class EventController {
     @GetMapping("/event/myevents")
     public ModelAndView getMyEvents() {
         User authenticatedUser = userService.getAuthenticatedUser();
-        List<Event> enteredEvents = authenticatedUser.getEventsJoined();
+        Set<Event> enteredEvents = authenticatedUser.getEventsJoined();
         List<Event> plannedEvents = authenticatedUser.getEventsPlanned();
         Role plannerRole = roleService.findByRoleName(ROLE_EVENT_PLANNER);
         boolean isPlanner = authenticatedUser.getRoles().contains(plannerRole);
@@ -186,6 +188,26 @@ public class EventController {
         log.info("Successfully edited event with id {}", savedEvent.getIdEvent());
         return "redirect:/event/" + event.getIdEvent();
     }
+
+    @PreAuthorize("#username == authentication.principal.username")
+    @RequestMapping("/event/delete/{idEvent}")
+    public String deleteEventById(@PathVariable("idEvent") Long idEvent,
+                                  @RequestParam("username") String username){
+
+        Event event = eventService.findById(idEvent);
+        Set<User> users = event.getUsers();
+
+        for(User user : users) {
+            event.removeUser(user);
+            user.removeJoinedEvent(event);
+            userService.saveWithoutHash(user);
+        }
+
+        eventService.deleteById(idEvent);
+        log.info("User {} successfully deleted event with id {}", username, idEvent);
+        return "redirect:/event/myevents";
+    }
+
     @RequestMapping("/event/{idEvent}/join")
     public String joinEvent(@PathVariable("idEvent") Long idEvent,
                            @RequestParam("username") String username) {
@@ -199,14 +221,6 @@ public class EventController {
         return "redirect:/event/" + idEvent;
     }
 
-    @PreAuthorize("#username == authentication.principal.username or hasRole('ROLE_ADMIN')")
-    @RequestMapping("/event/delete/{idEvent}")
-    public String deleteEventById(@PathVariable("idEvent") Long idEvent,
-                                 @RequestParam("username") String username){
-        eventService.deleteById(idEvent);
-        log.info("User {} successfully deleted event with id {}", username, idEvent);
-        return "redirect:/event/myevents";
-    }
 
     @RequestMapping("/event/{idEvent}/removeJoin")
     public String removeJoinEvent(@PathVariable("idEvent") Long idEvent,
@@ -227,7 +241,16 @@ public class EventController {
 
     @RequestMapping("/event/recommendations/{username}")
     public ModelAndView recommendEvents(@PathVariable("username") String username) {
-        List<Event> allEvents = eventService.findAll();
+        User authenticatedUser = userService.getAuthenticatedUser();
+        List<Event> currentEvents = eventService.getCurrentEvents();
+        List<Event> futureEvents = eventService.getFutureEvents();
+        Set<Event> enteredEvents = authenticatedUser.getEventsJoined();
+        List<Event> allEvents =  new ArrayList<>();
+
+        allEvents.addAll(currentEvents);
+        allEvents.addAll(futureEvents);
+        allEvents.addAll(enteredEvents);
+
         User user = userService.findByUsername(username);
         List<Event> recommendations = eventRecommender.generateEventRecommendations(user.getIdUser(), 5, allEvents);
 

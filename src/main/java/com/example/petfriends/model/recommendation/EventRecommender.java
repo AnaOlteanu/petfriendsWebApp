@@ -25,12 +25,11 @@ public class EventRecommender {
 
     public List<Event> generateEventRecommendations(Long idUser, int numRecommendations, List<Event> events) {
         User user = userService.findById(idUser);
-        List<Event> userEvents = user.getEventsJoined();
+        Set<Event> userEvents = user.getEventsJoined();
 
         List<Event> allEvents = new ArrayList<>(events);
 
         Pet pet = user.getPet();
-
 
         List<Long> eventIds = new ArrayList<>();
 
@@ -45,8 +44,6 @@ public class EventRecommender {
 
 
         List<EventPreprocessed> eventPreprocessedList = eventPreprocessor.preprocessEvents(allEvents);
-
-        log.info("Event preprocessed list {} ", eventPreprocessedList.get(0));
 
         Map<Long, Map<String, Double>> tfidfMap = tfidfModel.calculateTFIDF(eventPreprocessedList, pet.getBreed());
 

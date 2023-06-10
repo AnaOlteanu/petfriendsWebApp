@@ -32,7 +32,7 @@ public class EventPreprocessor {
                 preprocessedCity
         );
 
-        log.info("Event preprocessed {} ", eventPreprocessed.toString());
+        log.info("Event preprocessed {} ", eventPreprocessed);
 
         return eventPreprocessed;
     }
