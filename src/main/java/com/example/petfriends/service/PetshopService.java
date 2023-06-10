@@ -9,4 +9,6 @@ public interface PetshopService {
     List<Petshop> findAll();
     Petshop save(Petshop petshop);
     List<Petshop> findByCity(City city);
+    void deleteById(Long idPetshop);
+    Petshop findById(Long idPetshop);
 }

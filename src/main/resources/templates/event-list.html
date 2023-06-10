@@ -89,6 +89,13 @@
                 </div>
             </div>
         </div>
+        <div class="row" th:if="${currentEvents.size()==0}">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h3>There are no current events</h3>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="schedule-tab">
@@ -143,6 +150,13 @@
             <div class="col-lg-12">
                 <div class="section-title">
                     <h2>Future events</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row" th:if="${futureEvents.size()==0}">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h3>There are no future events</h3>
                 </div>
             </div>
         </div>
@@ -201,6 +215,13 @@
             <div class="col-lg-12">
                 <div class="section-title">
                     <h2>Ended events</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row" th:if="${endedEvents.size()==0}">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h3>There are no ended events</h3>
                 </div>
             </div>
         </div>

@@ -1,30 +1,28 @@
 package com.example.petfriends.controller;
 
-import com.example.petfriends.model.CategoryEnum;
-import com.example.petfriends.model.Event;
-import com.example.petfriends.model.EventPlannerRequest;
-import com.example.petfriends.model.Petshop;
+import com.example.petfriends.model.*;
 import com.example.petfriends.service.AdminService;
 import com.example.petfriends.service.CityService;
 import com.example.petfriends.service.EventPlannerRequestService;
 import com.example.petfriends.service.PetshopService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Controller
+@Slf4j
 public class AdminController {
 
 
@@ -75,5 +73,36 @@ public class AdminController {
         }
         Petshop savedPetshop = petshopService.save(petshop);
         return "redirect:/admin/petShops";
+    }
+
+    @RequestMapping("/admin/deletePetshop/{idPetshop}")
+    public String deletePetshopById(@PathVariable("idPetshop") Long idPetshop){
+
+        petshopService.deleteById(idPetshop);
+
+        return "redirect:/admin/petShops";
+    }
+
+    @GetMapping("/admin/editPetshop/{idPetshop}")
+    public ModelAndView editPetshopById(@PathVariable("idPetshop") Long idPetshop){
+
+        Petshop petshop = petshopService.findById(idPetshop);
+        ModelAndView modelAndView = new ModelAndView("admin-petshop-edit");
+        modelAndView.addObject("petshop", petshop);
+        modelAndView.addObject("cities", cityService.findAllCities());
+
+        return modelAndView;
+    }
+
+    @PostMapping("/admin/editPetshop")
+    public String editPetshop(@ModelAttribute @Valid Petshop petshop,
+                           BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "admin-petshop-edit";
+        }
+        Petshop savedPetshop = petshopService.save(petshop);
+        log.info("Successfully edited petshop with id {}", savedPetshop.getIdPetShop());
+        return "redirect:/admin/petShops" ;
     }
 }

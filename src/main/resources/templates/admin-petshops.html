@@ -75,6 +75,14 @@
                           <i class="ti-location-pin"></i>
                           <span th:text="|${petshop.city.cityName} , ${petshop.address}|"></span>
                         </li>
+                        <li>
+                          <i class="ti-trash"></i>
+                          <span><a th:href="@{/admin/deletePetshop/{idPetshop}(idPetshop=${petshop.idPetShop})}">Delete</a></span>
+                        </li>
+                        <li>
+                          <i class="ti-pencil"></i>
+                          <span><a th:href="@{/admin/editPetshop/{idPetshop}(idPetshop=${petshop.idPetShop})}">Edit</a></span>
+                        </li>
                       </ul>
                     </div>
                   </div>
